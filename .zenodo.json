@@ -1,0 +1,12 @@
+{
+    "description": "Kinetic model of foraminiferal calcification in Python.", 
+    "license": "GPL-3.0-only", 
+    "title": "Kinetic model of foraminiferal calcification in Python: foram", 
+    "creators": [
+        {
+            "affiliation": "NIOZ Royal Netherlands Institute for Sea Research, Texel, the Netherlands", 
+            "name": "Humphreys, Matthew P.",
+            "orcid": "0000-0002-9371-7128"
+        }
+    ]
+}
