@@ -62,14 +62,18 @@ def K1(t, s=35):
     )  # mol /kg
     return K1 * pH_total_to_free(t, s=s)
 
-  
-def K2 (t, s=35):
-    """Equilibrium constant for HCO3- -> H+ + CO3-- """
+
+def K2(t, s=35):
+    """Equilibrium constant for HCO3- -> H+ + CO3--"""
     K2 = np.exp(
-        -3351.610/(t+273.15) - 9.226508 - 0.2005743 * np.log(
-         t+273.15)  + (-23.9722/(t+273.15) - 0.106901773) *
-         np.sqrt(s) + 0.1130822 * s - 0.00846934*s**1.5 + np.log(
-             1 - 0.001005*s))
+        -3351.610 / (t + 273.15)
+        - 9.226508
+        - 0.2005743 * np.log(t + 273.15)
+        + (-23.9722 / (t + 273.15) - 0.106901773) * np.sqrt(s)
+        + 0.1130822 * s
+        - 0.00846934 * s ** 1.5
+        + np.log(1 - 0.001005 * s)
+    )
     return K2
 
 
@@ -112,10 +116,12 @@ def k_p5(t, s=35):
     """Rate equation for CO3 + H => HCO3 (Table 1) in kg /mol /s"""
     return 1e10  # kg /mol /s
 
+
 def k_m5(t, s=35):
     """Rate equation for HCO3-  => CP3-- + H+ (Table 1) in /s"""
-    return K2(t, s)*k_p5(t,s)
-    
+    return K2(t, s) * k_p5(t, s)
+
+
 def k_p6(t, s=35):
     """Rate equation for H2O => H + OH (Table 1) in mol /kg /s"""
     return 1.3e-3  # mol /kg /s
