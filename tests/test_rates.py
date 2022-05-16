@@ -19,6 +19,15 @@ def test_K1():
     )
 
 
+def test_K2():
+    assert np.isclose(
+        np.round(
+            np.log(foram.rates.K2(25, s=35) * foram.rates.pH_free_to_total(25, s=35)), 4
+        ),
+        -20.5504,
+    )
+
+
 def test_Kw():
     assert np.isclose(
         np.round(
@@ -32,23 +41,17 @@ def test_k_p1():
     assert np.isclose(np.round(foram.rates.k_p1(25, s=33.77), 3), 0.036)
 
 
-# def test_k_m1():
-#     assert np.isclose(np.round(foram.rates.k_m1(25, s=33.77), 2), 3.35e4)
-#     # Had to add extra decimal place - incorrect rounding in paper?
-
-# def test_k_p4():
-#     assert np.isclose(np.round(foram.rates.k_p4(25, s=0), 3), 8500)
+def test_k_m1():
+    assert np.isclose(np.round(foram.rates.k_m1(25, s=33.77), 2), 3.35e4)
+    # Had to add extra decimal place - incorrect rounding in paper?
 
 
-def test_K2()
-    assert np.isclose(np.round(np.log(foram.rates.K2(25, s=35)), 4), –20.5504)
-    
 def test_k_p4():
     assert np.isclose(np.round(foram.rates.k_p4(25, s=0), 3), 8500)
-    
-    
+
+
 def test_k_m4():
-    assert np.isclose(np.round(foram.rates.Kw(25, s=35), 3), 3.7*1e-4)
+    assert np.isclose(np.round(foram.rates.Kw(25, s=35), 3), 3.7 * 1e-4)
 
 
 def test_k_p5():
@@ -71,15 +74,17 @@ def test_k_m7():
     assert np.isclose(foram.rates.k_m7(25), 1e10)
 
 
-test_kHSO4_FREE_D90a()
-test_total_sulfate()
-test_Kw()
-test_k_p1()
-# test_k_m1()
-test_K1()
-# test_k_p4()
-# test_k_m4()
-test_k_p5()
-test_k_p6()
+# test_kHSO4_FREE_D90a()
+# test_total_sulfate()
+# test_K1()
+# test_K2()
+# test_Kw()
+# test_k_p1()
+test_k_m1()
+test_k_p4()
+test_k_m4()
+# test_k_p5()
+test_k_m5()
+# test_k_p6()
 test_k_m6()
-test_k_m7()
+# test_k_m7()

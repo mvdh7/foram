@@ -74,7 +74,7 @@ def K2(t, s=35):
         - 0.00846934 * s ** 1.5
         + np.log(1 - 0.001005 * s)
     )
-    return K2
+    return K2 * pH_total_to_free(t, s=s)
 
 
 def Kw(t, s=35):
