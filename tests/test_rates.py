@@ -10,10 +10,10 @@ def test_k_m1():
 
 
 def test_K1():
-    assert np.isclose(np.round(foram.rates.K1(25, s=35), 4), -13.4847)
+    assert np.isclose(np.round(np.log(foram.rates.K1(25, s=35)), 4), -13.4847)
 
-foram.rates.K1(25, s=35)    
+   
 #test_K1()   
 #test_k_m1()
 
-#foram.rates.k_m1(25, s=33.77)
+foram.rates.k_m1(25, s=33.77)
