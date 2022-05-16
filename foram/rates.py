@@ -9,6 +9,15 @@ def k_p1(t, s=35):
     return a1 * np.exp(-e1 / (constants.R * (t + 273.15)))
 
 
+def k_m4(t, s=35):
+    """Rate equation for CO2 + OH- -> HCO3- in /s"""
+    return Kw * ((k_m1*k_p4) / k_p1)
+
+def Kw (t, s=35):
+    """Equilibrium constant for H2O -> H+ + OH-"""
+    return np.exp(-13847.26/(t + 273.15) + 148.9652 - 23.6521 * np.log(t + 273.15) + (118.67/(t + 273.15) - 5.977 + 1.0495*np.log(t + 273.15))*s**0.5 - 0.01615 * s)
+
+
 def k_p5(t, s=35):
     """Rate equation for CO3 + H => HCO3 (Table 1) in kg /mol /s"""
     return 1e10  # kg /mol /s
