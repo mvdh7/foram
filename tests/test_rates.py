@@ -40,8 +40,15 @@ def test_k_p1():
 #     assert np.isclose(np.round(foram.rates.k_p4(25, s=0), 3), 8500)
 
 
-# def test_k_m4():
-#     assert np.isclose(np.round(foram.rates.Kw(25, s=35), 3), 3.7 * 1e-4)
+def test_K2()
+    assert np.isclose(np.round(np.log(foram.rates.K2(25, s=35)), 4), –20.5504)
+    
+def test_k_p4():
+    assert np.isclose(np.round(foram.rates.k_p4(25, s=0), 3), 8500)
+    
+    
+def test_k_m4():
+    assert np.isclose(np.round(foram.rates.Kw(25, s=35), 3), 3.7*1e-4)
 
 
 def test_k_p5():
