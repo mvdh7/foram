@@ -2,6 +2,53 @@ import numpy as np
 from . import constants
 
 
+def ionstr_DOE94(salinity):
+    """Ionic strength following DOE94 (from PyCO2SYS)."""
+    # === CO2SYS.m comments: =======
+    # This is from the DOE handbook, Chapter 5, p. 13/22, eq. 7.2.4.
+    return 19.924 * salinity / (1000 - 1.005 * salinity)
+
+
+def total_sulfate(s=35):
+    """Total sulfate following DOE."""
+    return 0.14 * s / (96.062 * 1.80655)
+
+
+def kHSO4_FREE_D90a(t, s=35):
+    """Bisulfate dissociation constant following D90a (from PyCO2SYS)."""
+    # === CO2SYS.m comments: =======
+    # Dickson, A. G., J. Chemical Thermodynamics, 22:113-127, 1990
+    # The goodness of fit is .021.
+    # It was given in mol/kg-H2O. I convert it to mol/kg-SW.
+    # TYPO on p. 121: the constant e9 should be e8.
+    # Output KS is on the free pH scale in mol/kg-sw.
+    # This is from eqs 22 and 23 on p. 123, and Table 4 on p 121:
+    TempK = t + 273.15
+    Sal = s
+    logTempK = np.log(TempK)
+    IonS = ionstr_DOE94(Sal)
+    lnKSO4 = (
+        -4276.1 / TempK
+        + 141.328
+        - 23.093 * logTempK
+        + (-13856 / TempK + 324.57 - 47.986 * logTempK) * np.sqrt(IonS)
+        + (35474 / TempK - 771.54 + 114.723 * logTempK) * IonS
+        + (-2698 / TempK) * np.sqrt(IonS) * IonS
+        + (1776 / TempK) * IonS ** 2
+    )
+    return np.exp(lnKSO4) * (1 - 0.001005 * Sal)
+
+
+def pH_free_to_total(t, s=35):
+    """Free to Total pH scale conversion factor."""
+    return 1.0 + total_sulfate(s=s) / kHSO4_FREE_D90a(t, s=s)
+
+
+def pH_total_to_free(t, s=35):
+    """Total to Free pH scale conversion factor."""
+    return 1.0 / pH_free_to_total(t, s=s)
+
+
 def K1(t, s=35):
     """Equilibrium constant for CO2 + H2O => HCO3 + H"""
     K1 = np.exp(
@@ -13,7 +60,7 @@ def K1(t, s=35):
         - 0.00654208 * s ** (3 / 2)
         + np.log(1 - 0.001005 * s)
     )  # mol /kg
-    return K1
+    return K1 * pH_total_to_free(t, s=s)
 
 
 def Kw(t, s=35):
@@ -24,7 +71,7 @@ def Kw(t, s=35):
         - 23.6521 * np.log(t + 273.15)
         + (118.67 / (t + 273.15) - 5.977 + 1.0495 * np.log(t + 273.15)) * s ** 0.5
         - 0.01615 * s
-    )
+    ) * pH_total_to_free(t, s=s)
 
 
 def k_p1(t, s=35):
