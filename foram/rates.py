@@ -9,6 +9,13 @@ def k_p1(t, s=35):
     return a1 * np.exp(-e1 / (constants.R * (t + 273.15)))
 
 
+def k_p4(t, s=35):
+    """Rate equation for CO2 + HO- => HCO3- (Table 1) in kg /mol /s"""
+    a4 = 8718 # kJ/mol
+    e4 = 62.8 # kJ/mol
+    return a4 * np.exp(-e4/(constants.R * (t + 273.15)))
+
+
 def k_m4(t, s=35):
     """Rate equation for CO2 + OH- -> HCO3- in /s"""
     return Kw * ((k_m1*k_p4) / k_p1)
@@ -30,3 +37,4 @@ def k_p6(t, s=35):
 def k_m7(t, s=35):
     """Rate equation for BOH4 + H => BOH3 + H2O (Table 1) in kg /mol /s"""
     return 1e10  # kg /mol /s
+
