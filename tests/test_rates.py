@@ -16,8 +16,8 @@ def test_k_m1():
 def test_K1():
     assert np.isclose(np.round(np.log(foram.rates.K1(25, s=35)), 4), -13.4847)
 
-   
-
+def test_K2()
+    assert np.isclose(np.round(np.log(foram.rates.K2(25, s=35)), 4), –20.5504)
     
 def test_k_p4():
     assert np.isclose(np.round(foram.rates.k_p4(25, s=0), 3), 8500)
