@@ -149,7 +149,7 @@ def k_p5(t, s=35):
 
 
 def k_m5(t, s=35):
-    """Rate equation for HCO3-  => CP3-- + H+ (Table 1) in /s"""
+    """Rate equation for HCO3- => CP3-- + H+ (Table 1) in /s"""
     return K2(t, s) * k_p5(t, s)
 
 
@@ -161,6 +161,11 @@ def k_p6(t, s=35):
 def k_m6(t, s=35):
     """Rate equation for H + OH => H2O (Table 1) in kg /mol /s"""
     return k_p6(t, s=s) / Kw(t, s=s)
+
+
+def k_p7(t, s=35):
+    """Rate equation for BOH3 + H2O => BOH4 + H (Table 1) in kg /mol /s"""
+    return k_m7(t, s=s) * KB(t, s=s)
 
 
 def k_m7(t, s=35):

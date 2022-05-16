@@ -83,6 +83,10 @@ def test_k_m6():
     assert np.isclose(foram.rates.k_m6(25), 2.8e10)
 
 
+def test_k_p7():
+    assert np.isclose(foram.rates.k_m7(25), 20)
+
+
 def test_k_m7():
     assert np.isclose(foram.rates.k_m7(25), 1e10)
 
@@ -102,4 +106,5 @@ test_k_m4()
 test_k_m5()
 # test_k_p6()
 test_k_m6()
+test_k_p7()
 # test_k_m7()
