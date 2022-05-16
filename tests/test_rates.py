@@ -72,8 +72,8 @@ def test_k_p1():
 
 
 def test_k_m1():
-    assert np.isclose(np.round(foram.rates.k_m1(25, s=33.77), 2), 3.35e4)
-    # Had to add extra decimal place - incorrect rounding in paper?
+    assert np.isclose(np.round(foram.rates.k_m1(25, s=33.77), 0), 33511)
+    # Appears that paper has truncation instead of rounding
 
 
 def test_k_p4():
@@ -116,7 +116,7 @@ def test_k_m7():
 # test_Kw()
 # test_KB()
 # test_k_p1()
-test_k_m1()
+# test_k_m1()
 test_k_p4()
 test_k_m4()
 # test_k_p5()
