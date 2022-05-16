@@ -1,4 +1,6 @@
 from . import constants, rates
 
-__author__ = "Humphreys, Matthew P."
-__version__ = "0.0.1"
+__author__ = " and ".join(
+    ["Humphreys, Matthew P.", "de Goeyse, Siham", "Cala, Ben", "de Nooijer, Lennart J."]
+)
+__version__ = "0.1"
