@@ -12,7 +12,7 @@ def K1(t, s=35):
         + 0.08468345 * s
         - 0.00654208 * s ** (3 / 2)
         + np.log(1 - 0.001005 * s)
-    )  # mol kg
+    )  # mol /kg
     return K1
 
 
@@ -36,8 +36,7 @@ def k_p1(t, s=35):
 
 def k_m1(t, s=35):
     """Rate equation for HCO3 + H => CO2 + H2O (Table 1) in kg /mol /s"""
-
-    return k_p1(t, s) / K1(t, s)
+    return k_p1(t, s=s) / K1(t, s=s)
 
 
 def k_p4(t, s=35):
@@ -49,7 +48,7 @@ def k_p4(t, s=35):
 
 def k_m4(t, s=35):
     """Rate equation for CO2 + OH- -> HCO3- in /s"""
-    return Kw * ((k_m1 * k_p4) / k_p1)
+    return Kw(t, s=s) * k_m1(t, s=s) * k_p4(t, s=s) / k_p1(t, s=s)
 
 
 def k_p5(t, s=35):
@@ -60,6 +59,11 @@ def k_p5(t, s=35):
 def k_p6(t, s=35):
     """Rate equation for H2O => H + OH (Table 1) in mol /kg /s"""
     return 1.3e-3  # mol /kg /s
+
+
+def k_m6(t, s=35):
+    """Rate equation for H + OH => H2O (Table 1) in kg /mol /s"""
+    return k_p6(t, s=s) / Kw(t, s=s)
 
 
 def k_m7(t, s=35):
