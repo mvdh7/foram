@@ -41,6 +41,15 @@ def test_Kw():
     )
 
 
+def test_KB():
+    assert np.isclose(
+        np.round(
+            np.log(foram.rates.KB(25, s=35) * foram.rates.pH_free_to_total(25, s=35)), 4
+        ),
+        -19.7964,
+    )
+
+
 def test_k_p1():
     assert np.isclose(np.round(foram.rates.k_p1(25, s=33.77), 3), 0.036)
 
@@ -84,6 +93,7 @@ def test_k_m7():
 # test_K1()
 # test_K2()
 # test_Kw()
+# test_KB()
 # test_k_p1()
 test_k_m1()
 test_k_p4()

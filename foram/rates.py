@@ -93,6 +93,32 @@ def Kw(t, s=35):
     ) * pH_total_to_free(t, s=s)
 
 
+def KB(t, s=35):
+    """Boric acid dissociation constant following D90b (from PyCO2SYS)."""
+    # === CO2SYS.m comments: =======
+    # Dickson, A. G., Deep-Sea Research 37:755-766, 1990.
+    # lnKB is on Total pH scale
+    TempK = t + 273.15
+    Sal = s
+    sqrSal = np.sqrt(Sal)
+    lnKBtop = (
+        -8966.9
+        - 2890.53 * sqrSal
+        - 77.942 * Sal
+        + 1.728 * sqrSal * Sal
+        - 0.0996 * Sal ** 2
+    )
+    lnKB = (
+        lnKBtop / TempK
+        + 148.0248
+        + 137.1942 * sqrSal
+        + 1.62142 * Sal
+        + (-24.4344 - 25.085 * sqrSal - 0.2474 * Sal) * np.log(TempK)
+        + 0.053105 * sqrSal * TempK
+    )
+    return np.exp(lnKB) * pH_total_to_free(t, s=s)
+
+
 def k_p1(t, s=35):
     """Rate equation for CO2 + H2O => HCO3 + H (Table 1) in /s"""
     a1 = (680.5 - 4.72 * s) * 1e8  # /s
