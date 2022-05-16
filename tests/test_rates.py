@@ -1,4 +1,5 @@
 import numpy as np
+import PyCO2SYS as pyco2
 import foram
 
 
@@ -21,6 +22,10 @@ def test_K1():
         ),
         -13.4847,
     )
+    assert np.isclose(
+        foram.rates.K1(25, s=35),
+        pyco2.sys(opt_pH_scale=3, opt_k_carbonic=1)["k_carbonic_1"],
+    )
 
 
 def test_K2():
@@ -29,6 +34,10 @@ def test_K2():
             np.log(foram.rates.K2(25, s=35) * foram.rates.pH_free_to_total(25, s=35)), 4
         ),
         -20.5504,
+    )
+    assert np.isclose(
+        foram.rates.K2(25, s=35),
+        pyco2.sys(opt_pH_scale=3, opt_k_carbonic=1)["k_carbonic_2"],
     )
 
 
@@ -39,6 +48,10 @@ def test_Kw():
         ),
         -30.434,
     )
+    assert np.isclose(
+        foram.rates.Kw(25, s=35),
+        pyco2.sys(opt_pH_scale=3, opt_k_carbonic=1)["k_water"],
+    )
 
 
 def test_KB():
@@ -47,6 +60,10 @@ def test_KB():
             np.log(foram.rates.KB(25, s=35) * foram.rates.pH_free_to_total(25, s=35)), 4
         ),
         -19.7964,
+    )
+    assert np.isclose(
+        foram.rates.KB(25, s=35),
+        pyco2.sys(opt_pH_scale=3, opt_k_carbonic=1)["k_borate"],
     )
 
 
