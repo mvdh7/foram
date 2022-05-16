@@ -81,7 +81,7 @@ def test_k_p4():
 
 
 def test_k_m4():
-    assert np.isclose(np.round(foram.rates.k_m4(25, s=35), 3), 3.7 * 1e-4)
+    assert np.isclose(np.round(foram.rates.k_m4(25, s=35), 5), 3.7e-4)
 
 
 def test_k_p5():
@@ -97,8 +97,8 @@ def test_k_p6():
 
 
 def test_k_m6():
-    assert np.isclose(np.round(foram.rates.k_m6(25),0, 27473493554))
-    #value in paper was 2.8 1e10 replaced because of rounding issue
+    assert np.isclose(np.round(foram.rates.k_m6(25), 0), 27473493554)
+    # value in paper was 2.8 1e10 replaced because of rounding issue
 
 
 def test_k_p7():
@@ -117,12 +117,12 @@ def test_k_m7():
 # test_Kw()
 # test_KB()
 # test_k_p1()
-#test_k_m1()
-test_k_p4()
-#test_k_m4()
+# test_k_m1()
+# test_k_p4()
+# test_k_m4()
 # test_k_p5()
-#test_k_m5()
+# test_k_m5()
 # test_k_p6()
-#test_k_m6()
-#test_k_p7()
+# test_k_m6()
+# test_k_p7()
 # test_k_m7()
