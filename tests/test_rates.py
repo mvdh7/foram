@@ -10,6 +10,10 @@ def test_total_sulfate():
     assert np.isclose(np.round(foram.rates.total_sulfate(s=35), 5), 0.02824)
 
 
+def test_total_borate():
+    assert np.isclose(np.round(foram.rates.total_borate(s=35), 6), 0.000416)
+
+
 def test_K1():
     assert np.isclose(
         np.round(
@@ -76,6 +80,7 @@ def test_k_m7():
 
 # test_kHSO4_FREE_D90a()
 # test_total_sulfate()
+# test_total_borate()
 # test_K1()
 # test_K2()
 # test_Kw()

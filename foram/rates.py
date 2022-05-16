@@ -14,6 +14,11 @@ def total_sulfate(s=35):
     return 0.14 * s / (96.062 * 1.80655)
 
 
+def total_borate(s=35):
+    """Total borate following DOE (Uppstrom)."""
+    return 0.0004157 * s / 35
+
+
 def kHSO4_FREE_D90a(t, s=35):
     """Bisulfate dissociation constant following D90a (from PyCO2SYS)."""
     # === CO2SYS.m comments: =======
