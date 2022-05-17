@@ -21,8 +21,7 @@ def mu(t, s):
     return mu
     
 
-# TODO: add stuff for a
-def Dc(t, a, s=35):
+def Dc(t, a, s=35): #values for a are in the constants
     """Diffusion, Stokes-Einstein relation), eq 11"""
     
     Dc = (constants.kB * (t+273.15)) / (6 * np.pi * mu(t, s) * a)
