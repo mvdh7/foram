@@ -5,6 +5,6 @@ kB = 1.380649 * 1e-23  #  m2 kg s-2 K-1
 radius = {}
 radius["HCO3"] = 0.207e-9 # Roobottom et al., 1999 
 radius["CO3"] = 0.189e-9 # Roobottom et al., 1999
-radius["H"] = 0
+radius["H"] = 0.24e-10 # Shannon & Prewitt, 1969
 radius["BOH3"] = 0
 radius["BOH4"] = 0.229e-9 # Roobottom et al., 1999
