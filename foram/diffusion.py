@@ -19,7 +19,7 @@ def mu(t, s):
 
 def Dc(t, ion, s=35):  # values for a are in the constants
     """Diffusion, Stokes-Einstein relation), eq 11"""
-    Dc = (constants.kB * (t + 273.15)) / (6 * np.pi * mu(t, s) * constants.radius[ion])
+    Dc = (constants.kB * (t + 273.15)) / (6 * np.pi * mu(t, s) * constants.radius[ion]) # m2 /s
     return Dc
 
 
