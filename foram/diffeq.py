@@ -37,10 +37,17 @@ def odesys(r,u,t,s=35): # maybe this needs to have the same input arguments as b
             dh, 
             ,
             doh, 
+            -1/r * oh - 1/diffusion.Dc(t,"OH",s)*
+              (+ rates.k_m4(t,s)*hco3 - rates.k_p4(t,s)*co2*oh + rates.k_p6(t, s) - rates.k_m6(t,s)*h*oh)
             ,
             dboh3, 
+            -1/r * dboh3 - 1/diffusion.Dc(t,"BOH3",s)*
+              (-rates.k_p7(t,s)*boh3 + rates.k_m7(t,s)*h*boh4)
             ,
-            dboh4, ])
+            dboh4, 
+            -1/r * dboh4 - 1/diffusion.Dc(t,"BOH4",s)*
+              (+ rates.k_p7(t,s)*boh3 - rates.k_m7(t,s)*h*boh4)
+            ])
 
 
 def bcs(ua,ub,t,s,a,Q,C):
