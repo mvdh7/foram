@@ -31,11 +31,13 @@ def odesys(r,u,t,s=35): # maybe this needs to have the same input arguments as b
               ((rates.k_m1(t,s)*h + rates.k_m4(t,s))*hco3 - (rates.k_p1(t,s) + rates.k_p4(t,s)*oh)*co2),
             dhco3, 
             -1/r * dhco3 - 1/diffusion.Dc(t,"HCO3",s)*
-              ...,
+              (rates.k_p1(t,s)*co2 - rates.k_m1(t,s)*h*hco3 + rates.k_p4(t,s)*co2*oh - rates.k_m4(t,s)*hco3 + rates.k_p5(t,s)*h*co3 - rates.k_m5(t,s)*hco3),
             dco3, 
-            ,
+            -1/r * dco3 - 1/diffusion.Dc(t,"CO3",s)*
+              (rates.k_m5(t,s)*hco3 - rates.k_p5(t,s)*h*co3),
             dh, 
-            ,
+            -1/r * dh - 1/diffusion.Dc(t,"H",s)*
+              ((rates.k_m5(t,s) - rates.k_m1(t,s)*h)*hco3 + rates.k_p1(t,s)*co2 - rates.k_p5(t,s)*h*co3 + rates.k_p6(t,s) - rates.k_m6(t,s)*h*oh + rates.k_p7(t,s)*boh3 - rates.k_m7(t,s)*h*boh4),
             doh, 
             ,
             dboh3, 
