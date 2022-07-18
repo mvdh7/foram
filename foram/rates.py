@@ -1,5 +1,5 @@
 import numpy as np
-from . import constants
+import constants
 
 
 def ionstr_DOE94(salinity):

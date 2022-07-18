@@ -5,7 +5,7 @@ import elvet
 #sys.path.append("C:\\Users\\Bea\\Documents\\GitHub\\foram\\foram")
 import numpy as np
 from scipy.integrate import solve_bvp
-from foram import rates, diffusion
+import rates, diffusion
 
 import PyCO2SYS as pyco2
 
@@ -34,59 +34,67 @@ Q = np.array([0,0,3.25,0,0,0,0])*1e-9*3600
 a = 200e-6
 b = 100*a
 
+domain = elvet.box((a , b, 10))
 
 
-
-def equations(r,c,dc):
+def equations(r,c,dc,d2c):
     co2, hco3, co3, h, oh, boh3, boh4 = c[0], c[1], c[2], c[3], c[4], c[5], c[6]
     dco2, dhco3, dco3, dh, doh, dboh3, dboh4 = dc[0,0], dc[0,1], dc[0,2], dc[0,3], dc[0,4], dc[0,5], dc[0,6]
+    d2co2, d2hco3, d2co3, d2h, d2oh, d2boh3, d2boh4 = d2c[0,0,0], d2c[0,0,1], d2c[0,0,2], d2c[0,0,3], d2c[0,0,4], d2c[0,0,5], d2c[0,0,6]
     return [
-            -1/r * dco2 - 1/diffusion.Dc_CO2(t)*
+            d2co2 + 1/r * dco2 + 1/diffusion.Dc_CO2(t)*
               ((rates.k_m1(t,s)*h + rates.k_m4(t,s))*hco3 - (rates.k_p1(t,s) + rates.k_p4(t,s)*oh)*co2),
              
-            -1/r * dhco3 - 1/diffusion.Dc(t,"HCO3",s)*
+            d2hco3 + 1/r * dhco3 + 1/diffusion.Dc(t,"HCO3",s)*
               (rates.k_p1(t,s)*co2 - rates.k_m1(t,s)*h*hco3 + rates.k_p4(t,s)*co2*oh - rates.k_m4(t,s)*hco3 + rates.k_p5(t,s)*h*co3 - rates.k_m5(t,s)*hco3),
              
-            -1/r * dco3 - 1/diffusion.Dc(t,"CO3",s)*
+            d2co3 + 1/r * dco3 + 1/diffusion.Dc(t,"CO3",s)*
               (rates.k_m5(t,s)*hco3 - rates.k_p5(t,s)*h*co3),
             
-            -1/r * dh - 1/diffusion.Dc(t,"H",s)*
+            d2h + 1/r * dh + 1/diffusion.Dc(t,"H",s)*
               ((rates.k_m5(t,s) - rates.k_m1(t,s)*h)*hco3 + rates.k_p1(t,s)*co2 - rates.k_p5(t,s)*h*co3 + rates.k_p6(t,s) - rates.k_m6(t,s)*h*oh + rates.k_p7(t,s)*boh3 - rates.k_m7(t,s)*h*boh4),
             
-            -1/r * doh - 1/diffusion.Dc(t,"OH",s)*
-              (+ rates.k_m4(t,s)*hco3 - rates.k_p4(t,s)*co2*oh + rates.k_p6(t, s) - rates.k_m6(t,s)*h*oh),
+            d2oh + 1/r * doh + 1/diffusion.Dc(t,"OH",s)*
+              (rates.k_m4(t,s)*hco3 - rates.k_p4(t,s)*co2*oh + rates.k_p6(t, s) - rates.k_m6(t,s)*h*oh),
              
-            -1/r * dboh3 - 1/diffusion.Dc(t,"BOH3",s)*
+            d2boh3 + 1/r * dboh3 + 1/diffusion.Dc(t,"BOH3",s)*
               (-rates.k_p7(t,s)*boh3 + rates.k_m7(t,s)*h*boh4),
              
-            -1/r * dboh4 - 1/diffusion.Dc(t,"BOH4",s)*
-              (+ rates.k_p7(t,s)*boh3 - rates.k_m7(t,s)*h*boh4)
+            d2boh4 + 1/r * dboh4 + 1/diffusion.Dc(t,"BOH4",s)*
+              (rates.k_p7(t,s)*boh3 - rates.k_m7(t,s)*h*boh4)
             ]
 
 
-bcs = [elvet.BC(b, lambda r, c, dc: c[0] - C[0]),
-       elvet.BC(b, lambda r, c, dc: c[1] - C[1]),
-       elvet.BC(b, lambda r, c, dc: c[2] - C[2]),
-       elvet.BC(b, lambda r, c, dc: c[3] - C[3]),
-       elvet.BC(b, lambda r, c, dc: c[4] - C[4]),
-       elvet.BC(b, lambda r, c, dc: c[5] - C[5]),
-       elvet.BC(b, lambda r, c, dc: c[6] - C[6]),
-       elvet.BC(a, lambda r, c, dc: dc[0,0] - Q[0]/(4*np.pi*a**2 * diffusion.Dc_CO2(t))),
-       elvet.BC(a, lambda r, c, dc: dc[0,1] - Q[1]/(4*np.pi*a**2 * diffusion.Dc(t,"HCO3",s))),
-       elvet.BC(a, lambda r, c, dc: dc[0,2] - Q[2]/(4*np.pi*a**2 * diffusion.Dc(t,"CO3",s))),
-       elvet.BC(a, lambda r, c, dc: dc[0,3] - Q[3]/(4*np.pi*a**2 * diffusion.Dc(t,"H",s))),
-       elvet.BC(a, lambda r, c, dc: dc[0,4] - Q[4]/(4*np.pi*a**2 * diffusion.Dc(t,"OH",s))),
-       elvet.BC(a, lambda r, c, dc: dc[0,5] - Q[5]/(4*np.pi*a**2 * diffusion.Dc(t,"BOH3",s))),
-       elvet.BC(a, lambda r, c, dc: dc[0,6] - Q[6]/(4*np.pi*a**2 * diffusion.Dc(t,"BOH4",s)))
+bcs = [elvet.BC(b, lambda r, c, dc, d2c: c[0] - C[0]),
+       elvet.BC(b, lambda r, c, dc, d2c: c[1] - C[1]),
+       elvet.BC(b, lambda r, c, dc, d2c: c[2] - C[2]),
+       elvet.BC(b, lambda r, c, dc, d2c: c[3] - C[3]),
+       elvet.BC(b, lambda r, c, dc, d2c: c[4] - C[4]),
+       elvet.BC(b, lambda r, c, dc, d2c: c[5] - C[5]),
+       elvet.BC(b, lambda r, c, dc, d2c: c[6] - C[6]),
+       elvet.BC(a, lambda r, c, dc, d2c: dc[0,0] - Q[0]/(4*np.pi*a**2 * diffusion.Dc_CO2(t))),
+       elvet.BC(a, lambda r, c, dc, d2c: dc[0,1] - Q[1]/(4*np.pi*a**2 * diffusion.Dc(t,"HCO3",s))),
+       elvet.BC(a, lambda r, c, dc, d2c: dc[0,2] - Q[2]/(4*np.pi*a**2 * diffusion.Dc(t,"CO3",s))),
+       elvet.BC(a, lambda r, c, dc, d2c: dc[0,3] - Q[3]/(4*np.pi*a**2 * diffusion.Dc(t,"H",s))),
+       elvet.BC(a, lambda r, c, dc, d2c: dc[0,4] - Q[4]/(4*np.pi*a**2 * diffusion.Dc(t,"OH",s))),
+       elvet.BC(a, lambda r, c, dc, d2c: dc[0,5] - Q[5]/(4*np.pi*a**2 * diffusion.Dc(t,"BOH3",s))),
+       elvet.BC(a, lambda r, c, dc, d2c: dc[0,6] - Q[6]/(4*np.pi*a**2 * diffusion.Dc(t,"BOH4",s)))
        ]
 
+def metrics(solver):
+    c = solver.prediction().T
+    return {"CO2": c[0], 
+            "HCO3": c[1], 
+            "CO3": c[2],
+            "H": c[3],
+            "OH": c[4],
+            "BOH3": c[5],
+            "BOH4": c[6]}
 
-
-domain = elvet.box((a , b, 100))
 
 c = elvet.nn(1, 10, 7)
 
-solver = elvet.solver(equations , bcs, domain, model=c , epochs =20000)
+solver = elvet.solver(equations, bcs, domain, model=c, epochs =20000, metrics=metrics)
 
 #%%
 import elvet.plotting

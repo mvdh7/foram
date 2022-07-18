@@ -1,5 +1,5 @@
 import numpy as np
-from . import constants
+import constants
 
 
 def mu(t, s):
